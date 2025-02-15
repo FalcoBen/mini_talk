@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/mnt/homes/fbenalla/Desktop/mini_talk",
+      "program": "/mnt/homes/fbenalla/Desktop/mini_talk/build/Debug/outDebug"
+    }
+  ]
+}
