@@ -6,10 +6,9 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 03:33:23 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/15 04:33:56 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:09:57 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minitalk.h"
 
@@ -17,48 +16,39 @@ void ft_putnbr(int nbr)
 {
 	if(nbr > 9)
 		ft_putnbr(nbr/10);
-	char c = (nbr % 10) + '0';
+	char c = (nbr % 10+ '0');
 	write(1, &c, 1);
 }
 
-void handler(int signal)
+void handler(int signal, siginfo_t *info, void *context)
 {
-    // static unsigned char c = 0;
-    // static int bit = 0;
+     static unsigned char c = 0;
+     static int client_pid = 0;
+     static int bit = 0;
 
+	 if(client_pid != info->si_pid)
+	 {
+        client_pid = info->si_pid;
+        c = 0;
+        bit = 0;
+    }
     if (signal == SIGUSR2)
-	{
-        // c = (c << 1) | 1; // Store bit as 1
-		write(1, "1", 1);
-	}
+         c = (c << 1) | 1; // 1
     else if (signal == SIGUSR1)
-	{	
-		write(1, "0", 1);
-        // c = (c << 1); // Store bit as 0
-	}
-    // bit++;
-
-    // if (bit == 8) // When 8 bits received, print char
-    // {
-    //     write(1, &c, 1);
-    //     bit = 0;
-    //     c = 0;
-    // }
+         c = (c << 1); // 0
+    bit++;
+    if (bit == 8) //
+    {
+		if(c == '\0')
+			write(1, &c, 1);
+    	else
+		{
+			write(1, &c, 1);
+    	    bit = 0;
+    	    c = 0;
+		}
+    }
 }
-
-
-// void handler(int signal)
-// {
-// 	// int i = 7;
-	
-// 	if(signal == SIGUSR2)
-// 	{
-// 		write(1, "1", 1);
-// 	}
-// 	else if(signal == SIGUSR1)
-// 		write(1, "0", 1);
-// 	sleep (1);
-// }
 
 int main(int ac, char **av)
 {
@@ -71,15 +61,18 @@ int main(int ac, char **av)
 	write(1, "The Process PID is ", 20);
 	ft_putnbr(pid);
 	write(1, "\n", 1);
+
 	struct sigaction sa;
-	sa.sa_handler = handler;
+	sa.sa_sigaction = handler;
+	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	// sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	write(1, "\n", 1);
 	while(1)
+	{
 		pause();
+		usleep(200);	
+	}
 	return 0;
 }

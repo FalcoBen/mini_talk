@@ -6,13 +6,11 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 03:33:25 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/15 04:29:04 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:13:44 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minitalk.h"
-
 
 int ft_atoi(char *str)
 {
@@ -41,17 +39,25 @@ void send_char(pid_t pid_server, unsigned char octet)
     while(i >= 0)
     {
         if((octet >> i) & 1)
-        {
             kill(pid_server, SIGUSR2);
-            printf("send 1 \n"); // 1
-        }
         else 
-        {
-            kill(pid_server, SIGUSR1);  // 0
-            printf("send 0 \n"); // 1
-        }
-        usleep(100);
+            kill(pid_server, SIGUSR1);
+        usleep(500);
         i--;
+    }
+}
+
+void check_digit(char *str)
+{
+    int i = 0;
+    while(str[i])
+    {
+        if(!(str[i] >= '0' && str[i] <= '9'))
+        {
+            printf("error in pid\n");
+            exit(1);
+        }    
+        i++;
     }
 }
 int main(int ac, char **av)
@@ -61,7 +67,9 @@ int main(int ac, char **av)
         printf("Usage ./client + PID + 'message' \n");
         return 0;
     }
+    check_digit(av[1]);
     pid_t process_id;
+    printf("the client pid = %d\n", getpid());
     process_id = ft_atoi(av[1]);
     char *message = av[2];
     while(*message)
@@ -69,8 +77,6 @@ int main(int ac, char **av)
         send_char(process_id, *message);
         message++;
     }
-    // send_char(process_id, '\0');
+    send_char(process_id, '\0');
     return 0;
 }
-
-//A =  01000001
