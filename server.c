@@ -6,7 +6,7 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 03:33:23 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/17 19:09:57 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:16:36 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,14 @@ void handler(int signal, siginfo_t *info, void *context)
     else if (signal == SIGUSR1)
          c = (c << 1); // 0
     bit++;
-    if (bit == 8) //
+    if (bit == 8) 
     {
-		if(c == '\0')
-			write(1, &c, 1);
-    	else
-		{
-			write(1, &c, 1);
-    	    bit = 0;
-    	    c = 0;
-		}
+		write(1, &c, 1);
+    	bit = 0;
+    	c = 0;
     }
+	// if(c == '\0')
+	// 	write(1, "\n", 1);
 }
 
 int main(int ac, char **av)
@@ -70,9 +67,7 @@ int main(int ac, char **av)
 	sigaction(SIGUSR2, &sa, NULL);
 	write(1, "\n", 1);
 	while(1)
-	{
 		pause();
-		usleep(200);	
-	}
+	
 	return 0;
 }
