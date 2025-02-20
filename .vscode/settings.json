@@ -59,6 +59,7 @@
   "files.associations": {
     "bitset": "cpp",
     "stdlib.h": "c",
-    "signal.h": "c"
+    "signal.h": "c",
+    "minitalk.h": "c"
   }
 }
