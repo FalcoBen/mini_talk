@@ -1,5 +1,5 @@
 CC = cc 
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 NAME = mandatory/client mandatory/server
 NAME_BONUS = bonus/client_bonus bonus/server_bonus
 

@@ -6,10 +6,9 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 19:57:44 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/20 20:15:20 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/22 11:57:49 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/minitalk.h"
 
@@ -55,6 +54,17 @@ void	send_char(pid_t pid_server, unsigned char octet)
 	}
 }
 
+void	ack_handler(int recu, siginfo_t *info, void *context)
+{
+	(void)(info);
+	(void)(context);
+	if (recu == SIGUSR1)
+	{
+		write(1, "message recu\n", 14);
+		exit(0);
+	}
+}
+
 void	check_digit(char *str)
 {
 	int	i;
@@ -73,8 +83,9 @@ void	check_digit(char *str)
 
 int	main(int ac, char **av)
 {
-	pid_t	process_id;
-	char	*message;
+	struct sigaction	recieve;
+	pid_t				process_id;
+	char				*message;
 
 	if (ac != 3)
 	{
@@ -83,11 +94,8 @@ int	main(int ac, char **av)
 	}
 	check_digit(av[1]);
 	process_id = ft_atoi(av[1]);
-	if (process_id <= 0)
-	{
-		write(2, "error in pid av[1]\n", 20);
-		return (1);
-	}
+	recieve.sa_sigaction = ack_handler;
+	sigaction(SIGUSR1, &recieve, NULL);
 	message = av[2];
 	while (*message)
 	{

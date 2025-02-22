@@ -6,7 +6,7 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 03:33:23 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/20 20:11:54 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/22 09:31:10 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	handler(int signal, siginfo_t *info, void *context)
 	static int				client_pid = 0;
 	static int				bit = 0;
 
+	(void)(context);
 	if (client_pid != info->si_pid)
 	{
 		client_pid = info->si_pid;
@@ -55,6 +56,7 @@ int	main(int ac, char **av)
 	struct sigaction	sa;
 	pid_t				pid;
 
+	(void)(av);
 	if (ac > 1)
 	{
 		write(2, "Usage : ./server \n", 19);

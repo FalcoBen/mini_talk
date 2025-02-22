@@ -6,10 +6,9 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 19:57:40 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/20 20:15:26 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/22 12:02:58 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/minitalk.h"
 
@@ -23,18 +22,24 @@ void	ft_putnbr(int nbr)
 	write(1, &c, 1);
 }
 
+void	check_pid(int client_pid, pid_t *si_pid, unsigned char *c, int *bit)
+{
+	if (client_pid != (int)si_pid)
+	{
+		client_pid = (int)si_pid;
+		c = 0;
+		bit = 0;
+	}
+}
+
 void	handler(int signal, siginfo_t *info, void *context)
 {
 	static unsigned char	c = 0;
 	static int				client_pid = 0;
 	static int				bit = 0;
 
-	if (client_pid != info->si_pid)
-	{
-		client_pid = info->si_pid;
-		c = 0;
-		bit = 0;
-	}
+	(void)(context);
+	check_pid(client_pid, &info->si_pid, &c, &bit);
 	if (signal == SIGUSR2)
 		c = (c << 1) | 1;
 	else if (signal == SIGUSR1)
@@ -43,7 +48,10 @@ void	handler(int signal, siginfo_t *info, void *context)
 	if (bit == 8)
 	{
 		if (c == '\0')
+		{
 			write(1, "\n", 1);
+			kill(info->si_pid, SIGUSR1);
+		}
 		else
 			write(1, &c, 1);
 		bit = 0;
@@ -56,6 +64,7 @@ int	main(int ac, char **av)
 	struct sigaction	sa;
 	pid_t				pid;
 
+	(void)(av);
 	if (ac > 1)
 	{
 		write(2, "Usage : ./server \n", 19);
