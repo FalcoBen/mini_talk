@@ -6,7 +6,7 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 03:33:23 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/22 09:31:10 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:05:49 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	pid = getpid();
-	write(1, "The Process PID is : ", 22);
+	write(0, "The Process PID is : ", 22);
 	ft_putnbr(pid);
-	write(1, "\n", 1);
+	write(0, "\n", 1);
 	sa.sa_sigaction = handler;
 	sa.sa_flags = SA_SIGINFO;
-	// sigemptyset(&sa.sa_mask);
+	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	write(1, "\n", 1);

@@ -6,7 +6,7 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 03:33:25 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/20 20:11:46 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:02:57 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	send_char(pid_t pid_server, unsigned char octet)
 		else
 			kill(pid_server, SIGUSR1);
 		usleep(250);
-		usleep(50);
+		usleep(250);
 		i--;
 	}
 }

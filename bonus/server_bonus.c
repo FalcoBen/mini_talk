@@ -6,11 +6,12 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 19:57:40 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/22 12:02:58 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:46:16 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
+#include <stdio.h>
 
 void	ft_putnbr(int nbr)
 {
@@ -21,14 +22,13 @@ void	ft_putnbr(int nbr)
 	c = (nbr % 10 + '0');
 	write(1, &c, 1);
 }
-
-void	check_pid(int client_pid, pid_t *si_pid, unsigned char *c, int *bit)
+void	check_pid(int *client_pid, siginfo_t *info, unsigned char *c, int *bit)
 {
-	if (client_pid != (int)si_pid)
+	if (*client_pid !=  info->si_pid)
 	{
-		client_pid = (int)si_pid;
-		c = 0;
-		bit = 0;
+		*client_pid =  info->si_pid;
+		*c = 0;
+		*bit = 0;
 	}
 }
 
@@ -39,7 +39,7 @@ void	handler(int signal, siginfo_t *info, void *context)
 	static int				bit = 0;
 
 	(void)(context);
-	check_pid(client_pid, &info->si_pid, &c, &bit);
+	check_pid(&client_pid, info, &c, &bit);
 	if (signal == SIGUSR2)
 		c = (c << 1) | 1;
 	else if (signal == SIGUSR1)
@@ -71,12 +71,12 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	pid = getpid();
-	write(1, "The Process PID is : ", 22);
+	write(0, "The Process PID is : ", 22);
 	ft_putnbr(pid);
-	write(1, "\n", 1);
+	write(0, "\n", 1);
 	sa.sa_sigaction = handler;
 	sa.sa_flags = SA_SIGINFO;
-	// sigemptyset(&sa.sa_mask);
+	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	write(1, "\n", 1);
