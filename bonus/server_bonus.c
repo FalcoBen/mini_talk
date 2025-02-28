@@ -6,47 +6,11 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 19:57:40 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/28 21:59:27 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/02/28 23:50:22 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
-#include <libc.h>
-
-typedef struct s_t
-{
-	// unsigned char	*buffer;
-	int				bit;
-	int				byte_index;
-	int				client_pid;
-	int				expected_bytes;
-	
-}t_t;
-void	ft_putnbr(int nbr)
-{
-	char	c;
-
-	if (nbr > 9)
-		ft_putnbr(nbr / 10);
-	c = (nbr % 10 + '0');
-	write(1, &c, 1);
-}
-
-int	ft_which_byte(unsigned char buffer[4])
-{
-	int	expected_bytes;
-
-	expected_bytes = 0;
-	if ((buffer[0] & 128) == 0)
-		expected_bytes = 1;
-	else if ((buffer[0] & 224) == 192)
-		expected_bytes = 2;
-	else if ((buffer[0] & 240) == 224)
-		expected_bytes = 3;
-	else if ((buffer[0] & 248) == 240)
-		expected_bytes = 4;
-	return (expected_bytes);
-}
 
 void	do_(t_t *set, unsigned char *buffer)
 {
@@ -60,19 +24,19 @@ void	do_(t_t *set, unsigned char *buffer)
 		{
 			write(1, buffer, set->expected_bytes);
 			set->byte_index = 0;
-			memset(buffer, 0, 4);
+			ft_memset(buffer, 0, 4);
 		}
 		if (buffer[set->byte_index - 1] == '\0')
 		{
 			set->byte_index = 0;
-			memset(buffer, 0, 4);
+			ft_memset(buffer, 0, 4);
 		}
 		else
 			return ;
 	}
 }
 
-void	check_pid(t_t *set, int *si_pid ,unsigned char *buffer)
+void	check_pid(t_t *set, int *si_pid, unsigned char *buffer)
 {
 	if (set->client_pid != *si_pid)
 	{
@@ -80,20 +44,17 @@ void	check_pid(t_t *set, int *si_pid ,unsigned char *buffer)
 		set->bit = 0;
 		set->byte_index = 0;
 		set->expected_bytes = 1;
-		memset(buffer, 0, 4);
+		ft_memset(buffer, 0, 4);
 	}
 }
+
 void	handler(int signal, siginfo_t *info, void *context)
 {
 	static unsigned char	buffer[4];
-	static t_t	set = {0};
-	
-	// set.bit = 0;
-	// set.byte_index = 0;
-	// set.client_pid = 0;
+	static t_t				set = {0};
+
 	// set.expected_bytes = 1;
 	(void)(context);
-	
 	check_pid(&set, &info->si_pid, buffer);
 	if (signal == SIGUSR2)
 		buffer[set.byte_index] = (buffer[set.byte_index] << 1) | 1;

@@ -75,6 +75,7 @@
     "memory": "cpp",
     "ratio": "cpp",
     "tuple": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "stdio.h": "c"
   }
 }

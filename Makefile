@@ -8,7 +8,7 @@ HEADER = include/minitalk.h
 RM = rm -f
 
 SRCF = mandatory/client.c mandatory/server.c
-SRCF_BONUS =  bonus/client_bonus.c bonus/server_bonus.c
+SRCF_BONUS =  bonus/client_bonus.c bonus/server_bonus.c bonus/server_utiles.c
 
 OBJC = $(SRCF:.c=.o)
 OBJC_BONUS = $(SRCF_BONUS:.c=.o)
