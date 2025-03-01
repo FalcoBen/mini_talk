@@ -6,7 +6,7 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 19:57:40 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/28 23:50:22 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/03/01 14:06:07 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void	do_(t_t *set, unsigned char *buffer)
 		(set->byte_index)++;
 		if (set->byte_index == set->expected_bytes)
 		{
+			if (buffer[set->bit] == '\0')
+			{
+				write(1, "\n", 2);
+				kill(set->client_pid, SIGUSR1);
+			}
 			write(1, buffer, set->expected_bytes);
 			set->byte_index = 0;
 			ft_memset(buffer, 0, 4);
@@ -53,7 +58,6 @@ void	handler(int signal, siginfo_t *info, void *context)
 	static unsigned char	buffer[4];
 	static t_t				set = {0};
 
-	// set.expected_bytes = 1;
 	(void)(context);
 	check_pid(&set, &info->si_pid, buffer);
 	if (signal == SIGUSR2)

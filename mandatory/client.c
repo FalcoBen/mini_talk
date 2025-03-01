@@ -6,7 +6,7 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 03:33:25 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/28 20:47:49 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/03/01 12:45:49 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,6 @@ int	main(int ac, char **av)
 	}
 	check_digit(av[1]);
 	process_id = ft_atoi(av[1]);
-	if (process_id <= 0)
-	{
-		write(2, "error in pid av[1]\n", 20);
-		return (1);
-	}
 	message = av[2];
 	while (*message)
 	{
