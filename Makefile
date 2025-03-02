@@ -6,7 +6,7 @@
 #    By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/01 12:43:25 by fbenalla          #+#    #+#              #
-#    Updated: 2025/03/01 14:29:50 by fbenalla         ###   ########.fr        #
+#    Updated: 2025/03/02 14:28:32 by fbenalla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ $(NAME): $(OBJC)
 	mv mandatory/server .
 	
 $(NAME_BONUS): $(OBJC_BONUS)
-	$(CC) $(CFLAGS) -o bonus/client_bonus bonus/client_bonus.o
+	$(CC) $(CFLAGS) -o bonus/client_bonus bonus/client_bonus.o bonus/server_utiles.o
 	mv bonus/client_bonus .
 	$(CC) $(CFLAGS) -o bonus/server_bonus bonus/server_bonus.o bonus/server_utiles.o
 	mv bonus/server_bonus .

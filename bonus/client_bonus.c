@@ -6,7 +6,7 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 19:57:44 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/03/01 12:45:52 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/03/02 14:27:35 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	main(int ac, char **av)
 	}
 	check_digit(av[1]);
 	process_id = ft_atoi(av[1]);
+	pid_check(process_id);
 	recieve.sa_sigaction = ack_handler;
 	sigaction(SIGUSR1, &recieve, NULL);
 	message = av[2];

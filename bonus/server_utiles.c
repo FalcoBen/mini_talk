@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/28 23:37:58 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/02/28 23:50:50 by fbenalla         ###   ########.fr       */
+/*   Created: 2025/03/02 14:07:06 by fbenalla          #+#    #+#             */
+/*   Updated: 2025/03/02 14:30:31 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,29 @@ void	ft_putnbr(int nbr)
 	write(1, &c, 1);
 }
 
-int	ft_which_byte(unsigned char buffer[4])
+void	pid_check(pid_t process_id)
 {
-	int	expected_bytes;
+	if (kill(process_id, SIGUSR1) == -1)
+	{
+		write(2, "Process ID not found.\n", 23);
+		exit(1);
+	}
+}
 
-	expected_bytes = 0;
-	if ((buffer[0] & 128) == 0)
-		expected_bytes = 1;
-	else if ((buffer[0] & 224) == 192)
-		expected_bytes = 2;
-	else if ((buffer[0] & 240) == 224)
-		expected_bytes = 3;
-	else if ((buffer[0] & 248) == 240)
-		expected_bytes = 4;
-	return (expected_bytes);
+int	ft_which_byte(unsigned char buffer)
+{
+	int	byte;
+
+	byte = 0;
+	if ((buffer & 128) == 0)
+		byte = 1;
+	else if ((buffer & 224) == 192)
+		byte = 2;
+	else if ((buffer & 240) == 224)
+		byte = 3;
+	else if ((buffer & 248) == 240)
+		byte = 4;
+	return (byte);
 }
 
 void	*ft_memset(void *b, int c, size_t len)
