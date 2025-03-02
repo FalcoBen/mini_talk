@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/02 14:07:06 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/03/02 14:30:31 by fbenalla         ###   ########.fr       */
+/*   Created: 2025/02/28 23:37:58 by fbenalla          #+#    #+#             */
+/*   Updated: 2025/03/02 16:30:15 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minitalk.h"
+#include "../include/minitalk_bonus.h"
 
 void	ft_putnbr(int nbr)
 {
@@ -24,27 +24,27 @@ void	ft_putnbr(int nbr)
 
 void	pid_check(pid_t process_id)
 {
-	if (kill(process_id, SIGUSR1) == -1)
+	if (kill(process_id, SIGUSR2) == -1)
 	{
 		write(2, "Process ID not found.\n", 23);
 		exit(1);
 	}
 }
 
-int	ft_which_byte(unsigned char buffer)
+int	ft_which_byte(unsigned char buffer[4])
 {
-	int	byte;
+	int	expected_bytes;
 
-	byte = 0;
-	if ((buffer & 128) == 0)
-		byte = 1;
-	else if ((buffer & 224) == 192)
-		byte = 2;
-	else if ((buffer & 240) == 224)
-		byte = 3;
-	else if ((buffer & 248) == 240)
-		byte = 4;
-	return (byte);
+	expected_bytes = 0;
+	if ((buffer[0] & 128) == 0)
+		expected_bytes = 1;
+	else if ((buffer[0] & 224) == 192)
+		expected_bytes = 2;
+	else if ((buffer[0] & 240) == 224)
+		expected_bytes = 3;
+	else if ((buffer[0] & 248) == 240)
+		expected_bytes = 4;
+	return (expected_bytes);
 }
 
 void	*ft_memset(void *b, int c, size_t len)

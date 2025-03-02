@@ -6,11 +6,11 @@
 /*   By: fbenalla <fbenalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 19:57:44 by fbenalla          #+#    #+#             */
-/*   Updated: 2025/03/02 14:27:35 by fbenalla         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:30:25 by fbenalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minitalk.h"
+#include "../include/minitalk_bonus.h"
 
 int	ft_atoi(char *str)
 {
